@@ -3,7 +3,7 @@
 
 PKG_NAME="mame"
 PKG_VERSION="a90e86e100f79533f257ac2b30ccefe26a76daad"
-PKG_SHA256="686ac235ebf5514271c14eaf5c2c02fc728893c75a187f8410d47279443d96de"
+
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/mame"

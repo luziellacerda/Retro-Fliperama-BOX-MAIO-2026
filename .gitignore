@@ -48,3 +48,5 @@ sx05re-kodi*.log
 
 packages/sx05re/experimental/
 packages/sx05re/emuelec-emulationstation/api_keys.txt
+*.tar.gz
+mame-a90e86e100f79533f257ac2b30ccefe26a76daad.tar.gz
