@@ -83,6 +83,34 @@ esac
 
 
 post_makeinstall_target() {
-  sed -e "s:\(['=LI]\)/usr:\\1${SYSROOT_PREFIX}/usr:g" -i ${SYSROOT_PREFIX}/usr/bin/sdl2-config
+  # Remove binários desnecessários do sysroot
   safe_remove ${INSTALL}/usr/bin
+
+  # Garante estrutura do sysroot lib32
+  mkdir -p ${SYSROOT_PREFIX}/usr/include
+  mkdir -p ${SYSROOT_PREFIX}/usr/lib
+  mkdir -p ${SYSROOT_PREFIX}/usr/lib/pkgconfig
+
+  # =========================
+  # 🔥 CRÍTICO: HEADERS SDL2
+  # =========================
+  cp -rf ${INSTALL}/usr/include/SDL2 ${SYSROOT_PREFIX}/usr/include/
+
+  # =========================
+  # 🔥 CRÍTICO: LIBS SDL2
+  # =========================
+  cp -rf ${INSTALL}/usr/lib/libSDL2* ${SYSROOT_PREFIX}/usr/lib/
+
+  # =========================
+  # 🔥 pkg-config (FFmpeg detecta SDL2 aqui)
+  # =========================
+  cp -rf ${INSTALL}/usr/lib/pkgconfig/sdl2.pc ${SYSROOT_PREFIX}/usr/lib/pkgconfig/ 2>/dev/null || true
+
+  # =========================
+  # Corrige sdl2-config para sysroot
+  # =========================
+  if [ -f "${SYSROOT_PREFIX}/usr/bin/sdl2-config" ]; then
+    sed -e "s:\(['=LI]\)/usr:\\1${SYSROOT_PREFIX}/usr:g" \
+        -i ${SYSROOT_PREFIX}/usr/bin/sdl2-config
+  fi
 }

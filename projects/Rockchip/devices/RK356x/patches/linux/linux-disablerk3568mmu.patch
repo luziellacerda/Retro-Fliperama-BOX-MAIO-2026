@@ -30,7 +30,7 @@ index e00a9dd46266..18255b5dad08 100644
  / {
  	chosen: chosen {
 -		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 root=PARTLABEL=rootfs rootfstype=ext4 ro rootwait overlayroot=device:dev=PARTLABEL=userdata,fstype=ext4,mkfs=1 coherent_pool=1m systemd.gpt_auto=0 cgroup_enable=memory swapaccount=1";
-+		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 console=tty0 root=PARTLABEL=EMUELEC rootfstype=ext4 ro rootwait overlayroot=device:dev=PARTLABEL=STORAGE,fstype=ext4,mkfs=1 coherent_pool=1m systemd.gpt_auto=0 cgroup_enable=memory swapaccount=1";
++		bootargs = "earlycon=uart8250,mmio32,0xfe660000 console=ttyFIQ0 console=tty0 root=PARTLABEL=LZGAMES rootfstype=ext4 ro rootwait overlayroot=device:dev=PARTLABEL=STORAGE,fstype=ext4,mkfs=1 coherent_pool=1m systemd.gpt_auto=0 cgroup_enable=memory swapaccount=1";
  	};
  
  	fiq-debugger {

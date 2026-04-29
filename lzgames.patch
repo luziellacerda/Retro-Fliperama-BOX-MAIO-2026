@@ -1,0 +1,36 @@
+diff --git a/packages/sx05re/emuelec/config/emuelec/configs/emuelec.conf b/packages/sx05re/emuelec/config/emuelec/configs/emuelec.conf
+--- a/packages/sx05re/emuelec/config/emuelec/configs/emuelec.conf
++++ b/packages/sx05re/emuelec/config/emuelec/configs/emuelec.conf
+@@
+-system.hostname=EMUELEC
++system.hostname=LZGAMES
+@@
+-global.netplay.nickname=EmuElec Player
++global.netplay.nickname=LZGames Player
+
+diff --git a/packages/sx05re/emuelec/bin/emuelec_autostart.sh b/packages/sx05re/emuelec/bin/emuelec_autostart.sh
+--- a/packages/sx05re/emuelec/bin/emuelec_autostart.sh
++++ b/packages/sx05re/emuelec/bin/emuelec_autostart.sh
+@@
+-echo "EMUELEC" > /storage/.cache/hostname
++echo "LZGAMES" > /storage/.cache/hostname
+
+diff --git a/packages/sx05re/emuelec/bin/updatecheck.sh b/packages/sx05re/emuelec/bin/updatecheck.sh
+--- a/packages/sx05re/emuelec/bin/updatecheck.sh
++++ b/packages/sx05re/emuelec/bin/updatecheck.sh
+@@
+-UFILE="EmuELEC-${EE_DEVICE}.aarch64-${UVER}"
++UFILE="LZGames-${EE_DEVICE}.aarch64-${UVER}"
+
+diff --git a/packages/sysutils/busybox/scripts/init b/packages/sysutils/busybox/scripts/init
+--- a/packages/sysutils/busybox/scripts/init
++++ b/packages/sysutils/busybox/scripts/init
+@@
+-boot="${boot:-UUID=}"
+-disk="${disk:-UUID=}"
++boot="${boot:-LABEL=BOOT}"
++disk="${disk:-LABEL=STORAGE}"
+
+@@
+-UUID=*|/*)
++LABEL=*|UUID=*|/*)
