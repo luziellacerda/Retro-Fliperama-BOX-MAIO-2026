@@ -2,12 +2,12 @@
 # Copyright (C) 2019-present Shanti Gilbert (https://github.com/shantigilbert)
 
 PKG_NAME="emuelec-emulationstation"
-PKG_VERSION="09356d0dae6291008a074d8ac4f8c20678d822d2"
-PKG_GIT_CLONE_BRANCH="EmuELEC"
+PKG_VERSION="5f9831b"
+PKG_GIT_CLONE_BRANCH="lzgames-base"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/EmuELEC/emuelec-emulationstation"
+PKG_SITE="https://github.com/luziellacerda/LZGAMES-emulationstation"
 PKG_URL="${PKG_SITE}.git"
 PKG_DEPENDS_TARGET="toolchain SDL2 freetype freeimage vlc rapidjson ${OPENGLES} SDL2_mixer fping p7zip espeak"
 PKG_SECTION="emuelec"
@@ -25,7 +25,7 @@ if [[ ${DEVICE} == "OdroidM1"  ]] || [[ ${DEVICE} == "RK356x"  ]]; then
 fi
 
 # themes for Emulationstation
-PKG_DEPENDS_TARGET="${PKG_DEPENDS_TARGET} Crystal"
+PKG_DEPENDS_TARGET="${PKG_DEPENDS_TARGET} Crystal LZGameBOX"
 
 pre_configure_target() {
 

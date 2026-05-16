@@ -1,0 +1,45 @@
+[33mtag v4.8.1-lzgames[m
+
+LZGames custom release with boot label fixes
+[33m0f213d46c2[m[33m ([m[1;36mHEAD -> [m[1;32mv4.8-maint[m[33m, [m[1;33mtag: v4.8.1-lzgames[m[33m, [m[1;33mtag: v4.8.1[m[33m, [m[1;31morigin/v4.8-maint[m[33m, [m[1;31morigin/lzgames-label-clean[m[33m, [m[1;32mlzgames-label-clean[m[33m)[m Alterado boot label EMUELEC para LZGAMES e corrigidos arquivos de boot
+ ...                                                |     0
+ distributions/LZGAMES/CoreELEC.png                 |   Bin [31m0[m -> [32m4974[m bytes
+ distributions/LZGAMES/CoreELEC_40x40.png           |   Bin [31m0[m -> [32m1035[m bytes
+ distributions/LZGAMES/EmuELEC/CoreELEC.png         |   Bin [31m0[m -> [32m4974[m bytes
+ distributions/LZGAMES/EmuELEC/CoreELEC_40x40.png   |   Bin [31m0[m -> [32m1035[m bytes
+ distributions/LZGAMES/EmuELEC/addons/fanart.png    |   Bin [31m0[m -> [32m76282[m bytes
+ distributions/LZGAMES/EmuELEC/options              |   505 [32m+[m
+ distributions/LZGAMES/EmuELEC/show_config          |    42 [32m+[m
+ .../Amlogic-ne/khadas_vim1s-boot-logo.bmp.gz       |   Bin [31m0[m -> [32m7714[m bytes
+ .../splash/Amlogic-ne/khadas_vim4-boot-logo.bmp.gz |   Bin [31m0[m -> [32m7708[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-0.png   |   Bin [31m0[m -> [32m381029[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-1.png   |   Bin [31m0[m -> [32m41781[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-10.png  |   Bin [31m0[m -> [32m42657[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-11.png  |   Bin [31m0[m -> [32m42674[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-12.png  |   Bin [31m0[m -> [32m41937[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-13.png  |   Bin [31m0[m -> [32m41530[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-14.png  |   Bin [31m0[m -> [32m42406[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-15.png  |   Bin [31m0[m -> [32m42073[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-16.png  |   Bin [31m0[m -> [32m41780[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-17.png  |   Bin [31m0[m -> [32m40875[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-18.png  |   Bin [31m0[m -> [32m41152[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-19.png  |   Bin [31m0[m -> [32m42541[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-2.png   |   Bin [31m0[m -> [32m40655[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-20.png  |   Bin [31m0[m -> [32m42249[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-21.png  |   Bin [31m0[m -> [32m42089[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-22.png  |   Bin [31m0[m -> [32m41468[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-23.png  |   Bin [31m0[m -> [32m42200[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-24.png  |   Bin [31m0[m -> [32m43030[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-25.png  |   Bin [31m0[m -> [32m42603[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-26.png  |   Bin [31m0[m -> [32m42705[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-27.png  |   Bin [31m0[m -> [32m41913[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-28.png  |   Bin [31m0[m -> [32m41511[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-29.png  |   Bin [31m0[m -> [32m42723[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-3.png   |   Bin [31m0[m -> [32m40994[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-30.png  |   Bin [31m0[m -> [32m42194[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-4.png   |   Bin [31m0[m -> [32m42273[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-5.png   |   Bin [31m0[m -> [32m42324[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-6.png   |   Bin [31m0[m -> [32m41966[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-7.png   |   Bin [31m0[m -> [32m41457[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-8.png   |   Bin [31m0[m -> [32m41882[m bytes
+ .../splash/Amlogic-ne/progress/splash-1080-9.pn
