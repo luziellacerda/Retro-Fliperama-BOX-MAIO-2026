@@ -11,6 +11,9 @@ PKG_VERSION="a40dace1ae0af3ebd45848549fdf396f40e3930f"
 PKG_GIT_CLONE_BRANCH="pi4-update"
 PKG_ARCH="aarch64"
 PKG_DEPENDS_TARGET="toolchain SDL2 boost openal-soft zlib"
+if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+  PKG_DEPENDS_TARGET+=" vulkan-loader"
+fi
 PKG_LONGDESC="Yabause   is a Sega Saturn emulator and took over as  Yaba Sanshiro"
 PKG_TOOLCHAIN="cmake-make"
 GET_HANDLER_SUPPORT="git"
@@ -42,6 +45,10 @@ pre_configure_target() {
                                -DYAB_PORTS=retro_arena"
     ;;
   esac
+
+  if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -DYAB_WANT_VULKAN=ON"
+  fi
 
   #PKG_CMAKE_OPTS_TARGET+=" -DCMAKE_SYSTEM_PROCESSOR=x86_64"
 

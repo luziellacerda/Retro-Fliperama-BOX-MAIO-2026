@@ -1,0 +1,70 @@
+--- a/core/cfg/option.cpp
++++ b/core/cfg/option.cpp
+@@ -102,6 +102,8 @@ Option<int> CrosshairSize("rend.CrosshairSize", 40);
+ Option<int> SkipFrame("ta.skip");
+ Option<int> MaxThreads("pvr.MaxThreads", 3);
+ Option<int> AutoSkipFrame("pvr.AutoSkipFrame", 0);
++Option<int> LZDeviceProfile("LZDeviceProfile", 2); // 0-4 LZTurboX*
++Option<int> LZMaxFpsLimit("LZMaxFpsLimit", 0); // 0,15,30,45,60
+ Option<int> RenderResolution("rend.Resolution", 480);
+ Option<bool> IntegerScale("rend.IntegerScale", false);
+ Option<bool> LinearInterpolation("rend.LinearInterpolation", true);
+--- a/core/cfg/option.h
++++ b/core/cfg/option.h
+@@ -463,6 +463,8 @@ extern Option<int> CrosshairSize;
+ extern Option<int> SkipFrame;
+ extern Option<int> MaxThreads;
+ extern Option<int> AutoSkipFrame;		// 0: none, 1: some, 2: more
++extern Option<int> LZDeviceProfile; // 0=LZTurboX,1=LZTurboX1,2=LZTurboX2,3=LZTurboX3,4=LZTurboX4 for LZGAMES (PSP-like)
++extern Option<int> LZMaxFpsLimit; // 0=unlimited,15,30,45,60 for LZGAMES FPS limit (PSP-like)
+ extern Option<int> RenderResolution;
+ extern Option<bool> IntegerScale;
+ extern Option<bool> LinearInterpolation;
+--- a/core/ui/settings_video.cpp
++++ b/core/ui/settings_video.cpp
+@@ -113,6 +113,45 @@ void gui_settings_video()
+ 			ImGui::Columns(1, nullptr, false);
+     	}
+     }
++
++    // LZGAMES custom: two menus (LZTurbo and LZFramesControl) for device profile + FPS limit
++    // Inserted after Graphics API (Vulkan choice etc) for in-emulator testing during use, same as PSP.
++    ImGui::Spacing();
++    header("LZTurbo / LZFramesControl (LZGAMES)");
++    {
++        static const char* lzProfiles[] = { "LZTurboX", "LZTurboX1", "LZTurboX2", "LZTurboX3", "LZTurboX4" };
++        int& prof = config::LZDeviceProfile.get();
++        if (ImGui::BeginCombo("LZTurbo (Device Profile)", lzProfiles[std::min(std::max(prof, 0), 4)]))
++        {
++            for (int i = 0; i < IM_ARRAYSIZE(lzProfiles); i++)
++            {
++                bool sel = (prof == i);
++                if (ImGui::Selectable(lzProfiles[i], sel))
++                    prof = i;
++                if (sel)
++                    ImGui::SetItemDefaultFocus();
++            }
++            ImGui::EndCombo();
++        }
++        ShowHelpMarker("Selects performance tweaks for your LZTurboX* hardware (weaker/stronger Amlogic X series). The launcher applies profile-specific settings (resolution etc) on launch.");
++
++        static const char* lzFps[] = { "Unlimited", "15", "30", "45", "60" };
++        int& fps = config::LZMaxFpsLimit.get();
++        if (ImGui::BeginCombo("LZFramesControl (FPS Limit)", lzFps[std::min(std::max(fps, 0), 4)]))
++        {
++            for (int i = 0; i < IM_ARRAYSIZE(lzFps); i++)
++            {
++                bool sel = (fps == i);
++                if (ImGui::Selectable(lzFps[i], sel))
++                    fps = i;
++                if (sel)
++                    ImGui::SetItemDefaultFocus();
++            }
++            ImGui::EndCombo();
++        }
++        ShowHelpMarker("Limits frames per second exactly. Launcher forces the cap (or unlimited). Use with different X series devices for testing stability/perf. 0=unlimited from menu means default behavior.");
++    }
++
+     header(T("Transparent Sorting"));
+     {
+ 		const bool has_per_pixel = GraphicsContext::Instance()->hasPerPixel();

@@ -35,7 +35,10 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-qt \
                            --disable-sdl \
                            --enable-sdl2 \
                            --enable-ffmpeg \
-                           --enable-neon"
+                           --enable-neon \
+                           --disable-slang \
+                           --disable-glslang \
+                           --disable-ffmpeg"
 
 if [ "${PROJECT}" = "Amlogic-ce" ]; then
   PKG_PATCH_DIRS+=" ${RA_DIRECTORY}/patches/Amlogic"
@@ -74,6 +77,8 @@ pre_configure_target() {
   export CFLAGS="${CFLAGS} -O3 -fno-tree-vectorize"
   TARGET_CONFIGURE_OPTS=""
   cd ${PKG_BUILD}
+  # LZGAMES compat for new RA (cpu perf label)
+  sed -i 's/MENU_ENUM_LABEL_CPU_PERF_MODE_STR/MENU_ENUM_LABEL_CPU_PERF_MODE/' ${PKG_BUILD}/menu/menu_displaylist.c || true
 }
 
 make_target() {

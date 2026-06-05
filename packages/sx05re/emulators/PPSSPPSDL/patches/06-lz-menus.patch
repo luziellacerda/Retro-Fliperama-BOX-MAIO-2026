@@ -1,0 +1,46 @@
+--- a/Core/Config.cpp
++++ b/Core/Config.cpp
+@@ -704,6 +704,8 @@ static const ConfigSetting gestureControlSettings[] = {
+ static const ConfigSetting graphicsSettings[] = {
+ 	ConfigSetting("iShowStatusFlags", SETTING(g_Config, iShowStatusFlags), 0, CfgFlag::PER_GAME),
+ 	ConfigSetting("GraphicsBackend", SETTING(g_Config, iGPUBackend), &DefaultGPUBackend, &GPUBackendTranslator::To, &GPUBackendTranslator::From, CfgFlag::DEFAULT | CfgFlag::REPORT),
++	ConfigSetting("LZDeviceProfile", SETTING(g_Config, iLZDeviceProfile), 2, CfgFlag::DEFAULT | CfgFlag::REPORT),  // 0=LZTurboX,1=LZTurboX1,2=LZTurboX2,3=LZTurboX3,4=LZTurboX4 for LZGAMES device profile choice
++	ConfigSetting("LZMaxFpsLimit", SETTING(g_Config, iLZMaxFpsLimit), 0, CfgFlag::DEFAULT | CfgFlag::REPORT),  // 0=unl,15,30,45,60 for LZGAMES FPS limit patch
+ #if PPSSPP_PLATFORM(ANDROID) && PPSSPP_ARCH(ARM64)
+ 	ConfigSetting("CustomDriver", SETTING(g_Config, sCustomDriver), "", CfgFlag::DEFAULT),
+ #endif
+--- a/Core/Config.h
++++ b/Core/Config.h
+@@ -262,6 +262,8 @@ struct Config : public ConfigBlock {
+ 
+ 	// GFX
+ 	int iGPUBackend;
++	int iLZDeviceProfile;  // 0=LZTurboX, 1=LZTurboX1, 2=LZTurboX2, 3=LZTurboX3, 4=LZTurboX4 (for LZGAMES device profile)
++	int iLZMaxFpsLimit;  // 0=unlimited, 15,30,45,60 - FPS limit choice for LZGAMES patch
+ 	std::string sCustomDriver;
+ 	std::string sFailedGPUBackends;  // NOT stored in ppsspp.ini anymore!
+ 	std::string sDisabledGPUBackends;
+--- a/UI/GameSettingsScreen.cpp
++++ b/UI/GameSettingsScreen.cpp
+@@ -327,6 +327,21 @@ void GameSettingsScreen::CreateGraphicsSettings(UI::ViewGroup *graphicsSettings)
+ 	}
+ #endif
+ 
++	// LZGAMES: two separate menus in Graphics/Backend as requested ("LZTurbo" for profile, "LZFramesControl" for FPS)
++	// Placed right after Backend choice. Launcher (ppsspp.sh) reads LZ* from ini and applies.
++	// Uses gr (GRAPHICS i18n) like other items.
++	static const char *lzDeviceProfiles[] = { "LZTurboX", "LZTurboX1", "LZTurboX2", "LZTurboX3", "LZTurboX4" };
++	PopupMultiChoice *lzProfileChoice = graphicsSettings->Add(new PopupMultiChoice(&g_Config.iLZDeviceProfile, gr->T("LZTurbo"), lzDeviceProfiles, 0, ARRAY_SIZE(lzDeviceProfiles), I18NCat::GRAPHICS, screenManager()));
++	lzProfileChoice->SetEnabledFunc([] {
++		return !g_Config.bSoftwareRendering;
++	});
++
++	static const char *lzFpsLimits[] = { "Unlimited", "15", "30", "45", "60" };
++	PopupMultiChoice *lzFpsChoice = graphicsSettings->Add(new PopupMultiChoice(&g_Config.iLZMaxFpsLimit, gr->T("LZFramesControl"), lzFpsLimits, 0, ARRAY_SIZE(lzFpsLimits), I18NCat::GRAPHICS, screenManager()));
++	lzFpsChoice->SetEnabledFunc([] {
++		return !g_Config.bSoftwareRendering;
++	});
++
+ 	// Backends that don't allow a device choice will only expose one device.
+ 	if (draw->GetDeviceList().size() > 1) {
+ 		std::string *deviceNameSetting = GPUDeviceNameSetting();

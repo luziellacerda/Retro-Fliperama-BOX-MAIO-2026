@@ -503,3 +503,4 @@ virtualjaguar"
 "/tmp/cores/tic80_libretro.so;"\
 "/tmp/cores/4do_libretro.so;"\
 "/tmp/cores/mednafen_saturn_libretro.so"
+  VULKAN_SUPPORT="yes"

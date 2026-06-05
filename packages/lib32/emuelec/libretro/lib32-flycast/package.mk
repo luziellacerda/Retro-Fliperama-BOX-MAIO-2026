@@ -25,6 +25,9 @@ PKG_CMAKE_OPTS_TARGET="-DLIBRETRO=ON \
 
 unpack() {
   ${SCRIPTS}/get flycast
+  # Force submodule init (tinygettext etc.) because get_git may skip submodule update
+  # on "already downloaded" check for the same commit, leaving core/deps/tinygettext empty.
+  ( cd ${SOURCES}/flycast/flycast-${PKG_VERSION} && git submodule update --init --recursive ) || true
   mkdir -p ${PKG_BUILD}
   tar cf - -C ${SOURCES}/flycast/flycast-${PKG_VERSION} ${PKG_TAR_COPY_OPTS} . | tar xf - -C ${PKG_BUILD}
 }

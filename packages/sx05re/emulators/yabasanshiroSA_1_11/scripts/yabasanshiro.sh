@@ -45,5 +45,37 @@ if [[ "${AUTOGP}" == "1" ]]; then
   set_yabasanshiro_joy.sh
 fi
 
+# LZGAMES: Vulkan (if enabled in build) + LZ profile for X series perf (weaker/stronger devices)
+# and FPS support. Matches other emus (psp, flycast).
+VULKAN=$(get_ee_setting yabasanshiro.vulkan 2>/dev/null)
+if [ -z "$VULKAN" ]; then
+  VULKAN=$(get_ee_setting global.vulkan 2>/dev/null)
+fi
+VIDCORE=1
+if [[ "$VULKAN" == "1" ]]; then
+  VIDCORE=4
+fi
+
+PROFILE=$(get_ee_setting amlogic.xseries 2>/dev/null)
+if [ -z "$PROFILE" ]; then
+  PROFILE="LZTurboX3"
+fi
+
+RESMODE=2
+case "$PROFILE" in
+  LZTurboX|LZTurboX1|LZTurboX2)
+    RESMODE=1
+    ;;
+  LZTurboX3|LZTurboX4|*)
+    RESMODE=2
+    ;;
+esac
+
+FPSLIMIT=$(get_ee_setting yabasanshiro.fpslimit 2>/dev/null)
+if [ -n "$FPSLIMIT" ] && [ "$FPSLIMIT" != "0" ]; then
+  # Yaba uses frameskip/res; exact FPS may use external or future flag. Adjust res for now.
+  RESMODE=1
+fi
+
 # We use { } to avoid SIGUSR signal showing text and messing up with the error handling
-{ yabasanshiro -r 2 -i "${1}" ${BIOS}; } > /emuelec/logs/emuelec.log 2>&1
+{ YAB_VIDCORE=$VIDCORE yabasanshiro -r $RESMODE -i "${1}" ${BIOS}; } > /emuelec/logs/emuelec.log 2>&1

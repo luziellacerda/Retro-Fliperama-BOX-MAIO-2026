@@ -1,0 +1,10 @@
+--- a/menu/menu_displaylist.c
++++ b/menu/menu_displaylist.c
+@@ -13180,7 +13180,7 @@ static int menu_displaylist_parse_options(menu_handle_t *menu,
+ 
+                   menu_entries_append(info->list,
+                         msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CPU_PERF_MODE),
+-                        MENU_ENUM_LABEL_CPU_PERF_MODE_STR,
++                        MENU_ENUM_LABEL_CPU_PERF_MODE,
+                         MENU_ENUM_LABEL_CPU_PERF_MODE,
+                         0, 0, 0, NULL);

@@ -1,0 +1,19 @@
+a/Common/GPU/OpenGL/GLFeatures.cpp b/Common/GPU/OpenGL/GLFeatures.cpp
+--- a/Common/GPU/OpenGL/GLFeatures.cpp
++++ b/Common/GPU/OpenGL/GLFeatures.cpp
+@@ -8,6 +8,15 @@
+ #if PPSSPP_API(ANY_GL)
+ #include "Common/GPU/OpenGL/GLCommon.h"
+ 
++// Fallback for GLES (Amlogic LZGAMES etc): the EXT_clip_cull_distance may be available at
++// runtime via glGetString but the numeric constants not in the build headers.
++#ifndef GL_MAX_CLIP_DISTANCES_EXT
++#define GL_MAX_CLIP_DISTANCES_EXT 0x0D32
++#endif
++#ifndef GL_MAX_CULL_DISTANCES_EXT
++#define GL_MAX_CULL_DISTANCES_EXT 0x82F9
++#endif
++
+ #if defined(_WIN32)
+ #include "GL/wglew.h"
+ #endif

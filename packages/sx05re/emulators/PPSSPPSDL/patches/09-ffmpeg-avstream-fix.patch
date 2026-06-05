@@ -1,0 +1,22 @@
+a/Core/HW/MediaEngine.cpp b/Core/HW/MediaEngine.cpp
+--- a/Core/HW/MediaEngine.cpp
++++ b/Core/HW/MediaEngine.cpp
+@@ -298,7 +298,8 @@ bool MediaEngine::openContext(bool keepReadPos) {
+ 	av_dict_free(&open_opt);
+ 
+ 	bool usedFFMPEGFindStreamInfo = false;
+-	if (!SetupStreams() || PSP_CoreParameter().compat.flags().UseFFMPEGFindStreamInfo) {
++	if (true) {
++		// EmuELEC LZGAMES fmv stutter fix (force fallback).
+ 		// Fallback to old behavior.  Reads too much and corrupts when game doesn't read fast enough.
+ 		// SetupStreams sometimes work for newer FFmpeg 3.1+ now, but sometimes framerate is missing.
+ 		WARN_LOG_REPORT_ONCE(setupStreams, Log::ME, "Failed to read valid video stream data from header");
+@@ -433,7 +434,7 @@ bool MediaEngine::addVideoStream(int streamNum, int streamId) {
+ #if LIBAVFORMAT_VERSION_MAJOR >= 59
+ 			avpriv_stream_set_need_parsing(stream, AVSTREAM_PARSE_FULL);
+ #else
+-			stream->request_probe = 0;
++			// stream->request_probe = 0; // removed: not present in older ffmpeg AVStream in LZGAMES toolchain (compat fix for update)
+ 			stream->need_parsing = AVSTREAM_PARSE_FULL;
+ #endif
+ 			// We could set the width here, but we don't need to.

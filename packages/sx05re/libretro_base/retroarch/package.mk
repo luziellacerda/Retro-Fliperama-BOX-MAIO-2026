@@ -19,7 +19,7 @@
 ################################################################################
 
 PKG_NAME="retroarch"
-PKG_VERSION="bfa603828d158b7014618fe169d459112f5c420d"
+PKG_VERSION="5ac03f1116c7c948e485e8b72e3976b5e7d1798b"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="${PKG_SITE}.git"
 PKG_LICENSE="GPLv3"
@@ -44,6 +44,11 @@ fi
 pre_configure_target() {
 # Retroarch does not like -O3 for CHD loading with cheevos
 export CFLAGS="${CFLAGS} -O3 -fno-tree-vectorize"
+
+# LZGAMES/EmuELEC compat fixes for new RA version (cpu label, ffmpeg gles2)
+sed -i 's/MENU_ENUM_LABEL_CPU_PERF_MODE_STR/MENU_ENUM_LABEL_CPU_PERF_MODE/' ${PKG_BUILD}/menu/menu_displaylist.c
+sed -i '/if (fft->ms_fbo)/,/GL_CHECK_ERROR();/c\   if (fft->ms_fbo)\n   {\n      /* Disabled for Amlogic GLES2 compat */\n#if 0\n      static const GLenum attachments[] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_STENCIL_ATTACHMENT };\n      glBindFramebuffer(GL_READ_FRAMEBUFFER, fft->ms_fbo);\n      glBindFramebuffer(GL_DRAW_FRAMEBUFFER, backbuffer);\n      glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);\n      glBindFramebuffer(GL_FRAMEBUFFER, fft->ms_fbo);\n      glInvalidateFramebuffer(GL_FRAMEBUFFER, 2, attachments);\n      GL_CHECK_ERROR();\n#endif\n   }' ${PKG_BUILD}/cores/libretro-ffmpeg/ffmpeg_core.c || true
+sed -i '/#include "internal_cores.h"/a\ \n/* GLES2 compat defines */\n#ifndef GL_RG_INTEGER\n#define GL_RG_INTEGER 0x8228\n#endif\n#ifndef GL_RED_INTEGER\n#define GL_RED_INTEGER 0x8D94\n#endif\n#ifndef GL_RG\n#define GL_RG 0x8227\n#endif\n#ifndef GL_RG8\n#define GL_RG8 0x822B\n#endif\n#ifndef glUnmapBuffer\n#define glUnmapBuffer(x) 0\n#endif\n#ifndef glMapBufferRange\n#define glMapBufferRange(a,b,c,d) NULL\n#endif\n#ifndef hwfft_new\n#define hwfft_new() NULL\n#endif\n#ifndef hwfft_step\n#define hwfft_step(a,b,c) \n#endif\n#ifndef hwfft_free\n#define hwfft_free(a) \n#endif' ${PKG_BUILD}/cores/libretro-ffmpeg/ffmpeg_core.c || true
 
 TARGET_CONFIGURE_OPTS=""
 PKG_CONFIGURE_OPTS_TARGET="--disable-qt \
@@ -75,6 +80,10 @@ fi
 
 if [ "${DEVICE}" == "OdroidGoAdvance" ]; then
 PKG_CONFIGURE_OPTS_TARGET+=" --enable-odroidgo2"
+fi
+
+if [ "${DEVICE}" = "Amlogic-ng" ]; then
+PKG_CONFIGURE_OPTS_TARGET+=" --disable-ffmpeg"
 fi
 
 if [ ${ARCH} == "arm" ]; then

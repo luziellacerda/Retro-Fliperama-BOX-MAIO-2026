@@ -1,0 +1,38 @@
+--- a/yabause/src/retro_arena/main.cpp
++++ b/yabause/src/retro_arena/main.cpp
+@@ -51,6 +51,10 @@ extern "C" {
+ #include "yabause.h"
+ #include "vdp2.h"
+ #include "scsp.h"
++
++#ifdef YAB_WANT_VULKAN
++#include "../vulkan/VIDVulkanCInterface.h"
++#endif
+ #include "vidsoft.h"
+ #include "vidogl.h"
+ #include "peripheral.h"
+@@ -139,6 +143,9 @@ SoundInterface_struct *SNDCoreList[] = {
+ VideoInterface_struct *VIDCoreList[] = {
+   &VIDDummy,
+   &VIDOGL,
++#ifdef YAB_WANT_VULKAN
++  &CVIDVulkan,
++#endif
+   NULL
+ };
+ 
+@@ -223,7 +230,13 @@ int yabauseinit()
+   yinit.sh2coretype = 3;
+ #endif
+   //yinit.vidcoretype = VIDCORE_SOFT;
+-  yinit.vidcoretype = 1;
++  // LZGAMES: allow selecting Vulkan (4) or OGL (1) via env for launcher support
++  const char* yab_vid = getenv("YAB_VIDCORE");
++  if (yab_vid) {
++    yinit.vidcoretype = atoi(yab_vid);
++  } else {
++    yinit.vidcoretype = 1;
++  }
+   yinit.sndcoretype = SNDCORE_SDL;
+   //yinit.sndcoretype = SNDCORE_DUMMY;
+   //yinit.cdcoretype = CDCORE_DEFAULT;
