@@ -24,4 +24,14 @@ makeinstall_target() {
   tar -xvJf ${PKG_BUILD}/rootfs_additions.tar.xz -C ${INSTALL}/usr/share
   mv ${INSTALL}/usr/share/etc/vulkan/* ${INSTALL}/usr/share/vulkan/
   rm -r ${INSTALL}/usr/share/etc
+
+  # LZGAMES: install the libmali setup script + service (updated to support this package's
+  # libmali.so.0.46.0 naming for G31 when user selects dtb for Amlogic X boxes).
+  # This ensures /usr/bin/libmali-setup runs at boot and creates the /var/lib/libmali symlink
+  # so GLES/ES can initialize the display (fixes black screen after dtb swap).
+  mkdir -p ${INSTALL}/usr/bin ${INSTALL}/usr/lib/systemd/system
+  cp -f ${PKG_DIR}/../libmali/scripts/libmali-setup ${INSTALL}/usr/bin/libmali-setup || true
+  cp -f ${PKG_DIR}/../libmali/system.d/libmali-setup.service ${INSTALL}/usr/lib/systemd/system/ || true
+  mkdir -p ${INSTALL}/usr/lib/systemd/system/multi-user.target.wants
+  ln -sf /usr/lib/systemd/system/libmali-setup.service ${INSTALL}/usr/lib/systemd/system/multi-user.target.wants/libmali-setup.service || true
 }

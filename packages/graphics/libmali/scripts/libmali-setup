@@ -37,6 +37,19 @@ echo "LIB: $LIB"
 
 LIBMALI=$(find /usr/lib -name $LIB)
 
+# LZGAMES fix for Amlogic X series (user swaps dtb to select hardware):
+# The libmali-vulkan package (r46p0) installs libmali.so.0.46.0 + GLES/EGL for G31/G52
+# instead of the old "libmali-bifrost-gXX-*.so" naming that the original script expects.
+# When G31/G52 is reported by the kernel (from the dtb the user chose), fall back to the
+# versioned lib from the vulkan package so the /var/lib/libmali/libmali.so symlink is created
+# and GLES/ES can initialize the display. Without this, even with correct dtb the screen stays black.
+if [ ! -f "$LIBMALI" ]; then
+  if echo "$GPU" | grep -qE 'G31|G52'; then
+    LIBMALI=$(find /usr/lib -name 'libmali.so.0.46*' 2>/dev/null | head -1)
+    [ -z "$LIBMALI" ] && LIBMALI=$(find /usr/lib -name 'libmali.so' 2>/dev/null | head -1)
+  fi
+fi
+
 echo "LIBMALI: $LIBMALI"
 [ ! -f "$LIBMALI" ] && exit
 
