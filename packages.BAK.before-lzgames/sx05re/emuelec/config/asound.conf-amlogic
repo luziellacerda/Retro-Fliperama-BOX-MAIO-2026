@@ -1,7 +1,0 @@
-## not needed
-#pcm.!default {
-#type plug
-#slave {
-#pcm "hw:0,0"
-#}
-#}
