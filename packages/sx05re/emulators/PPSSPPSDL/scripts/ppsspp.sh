@@ -68,6 +68,21 @@ elif [[ "${VULKAN}" == "0" ]]; then
 fi
 # If unset/empty: do nothing → respect whatever you last chose inside PPSSPP's own menu during use.
 
+# Safe settings when Vulkan (GraphicsBackend=3) is active (forced from system or saved from in-emu choice).
+# This helps avoid black screen + sound-only on some Amlogic X boxes / dtb combinations with the current Mali Vulkan driver,
+# while still allowing full Vulkan when it works on the user's hardware.
+# Low res + buffered + VSync + no auto skip are known to be more stable for presentation on these G31 devices.
+# The user can still change everything inside PPSSPP Graphics menu (our LZ options are right after the standard Backend choice).
+if grep -q "^GraphicsBackend = 3" "$INI" 2>/dev/null ; then
+  sed -i 's/^InternalResolution = [0-9]*/InternalResolution = 1/' "$INI" 2>/dev/null || true
+  sed -i 's/^RenderingMode = [0-9]*/RenderingMode = 1/' "$INI" 2>/dev/null || true
+  sed -i 's/^iVSyncInterval = [0-9]*/iVSyncInterval = 1/' "$INI" 2>/dev/null || echo "iVSyncInterval = 1" >> "$INI"
+  sed -i 's/^AutoFrameSkip = [0-9]*/AutoFrameSkip = 0/' "$INI" 2>/dev/null || true
+  # For stronger boxes you can experiment higher res by changing inside the menu (LZTurboX3/X4 profile)
+  # or uncomment below (may cause black on marginal dtb/hardware):
+  # sed -i 's/^InternalResolution = [0-9]*/InternalResolution = 2/' "$INI" 2>/dev/null || true
+fi
+
 # --- LZTurbo profile (LZTurboX / LZTurboX1 / LZTurboX2 / LZTurboX3 / LZTurboX4) ---
 # This is exposed in PPSSPP Graphics menu as "LZTurbo" (separate from "LZFramesControl").
 # Choose the device variant inside the emulator menu during tests.
